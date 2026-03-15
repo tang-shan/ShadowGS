@@ -1,0 +1,6 @@
+# ninja log v5
+1	1226	1760978625245116435	/home/tangshan/Codes/shadowgs/submodules/opacity-feature-gaussian-rasterization/build/temp.linux-x86_64-cpython-37/cuda_rasterizer/forward.o	2638d488fcdaad4e
+0	1293	1760978625313116166	/home/tangshan/Codes/shadowgs/submodules/opacity-feature-gaussian-rasterization/build/temp.linux-x86_64-cpython-37/cuda_rasterizer/backward.o	b567c528c7a65ed6
+1	6135	1760978630149097074	/home/tangshan/Codes/shadowgs/submodules/opacity-feature-gaussian-rasterization/build/temp.linux-x86_64-cpython-37/cuda_rasterizer/rasterizer_impl.o	8162b576d733dc93
+1	15562	1760978639553060071	/home/tangshan/Codes/shadowgs/submodules/opacity-feature-gaussian-rasterization/build/temp.linux-x86_64-cpython-37/ext.o	a0b23706076469e0
+1	31825	1760978655840988216	/home/tangshan/Codes/shadowgs/submodules/opacity-feature-gaussian-rasterization/build/temp.linux-x86_64-cpython-37/rasterize_points.o	2d26954b0d487809

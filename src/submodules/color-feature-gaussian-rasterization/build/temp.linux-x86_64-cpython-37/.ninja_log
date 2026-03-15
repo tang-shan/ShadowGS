@@ -1,0 +1,6 @@
+# ninja log v5
+0	1315	1760976624438951069	/home/tangshan/Codes/shadowgs/submodules/color-feature-gaussian-rasterization/build/temp.linux-x86_64-cpython-37/cuda_rasterizer/forward.o	4fb4bbf16535bbea
+1	6121	1760976629242709359	/home/tangshan/Codes/shadowgs/submodules/color-feature-gaussian-rasterization/build/temp.linux-x86_64-cpython-37/cuda_rasterizer/rasterizer_impl.o	8daae532e70efb78
+1	15619	1760976638726238404	/home/tangshan/Codes/shadowgs/submodules/color-feature-gaussian-rasterization/build/temp.linux-x86_64-cpython-37/ext.o	fc98034e945b11ca
+1	31883	1760976655009448646	/home/tangshan/Codes/shadowgs/submodules/color-feature-gaussian-rasterization/build/temp.linux-x86_64-cpython-37/rasterize_points.o	12b6afdbfa5c820d
+20	1264	1760976663785032698	/home/tangshan/Codes/shadowgs/submodules/color-feature-gaussian-rasterization/build/temp.linux-x86_64-cpython-37/cuda_rasterizer/backward.o	f6f7b9ea928796b7
