@@ -6,7 +6,7 @@
   
   <!-- Primary Meta Tags -->
   <!-- TODO: Replace with your paper title and author names -->
-  <meta name="title" content="PAPER_TITLE - AUTHOR_NAMES">
+  <meta name="title" content="Shadow-Aware 3D Gaussian Splatting via Lambertian-Guided Neural Masking">
   <!-- TODO: Write a compelling 150-160 character description of your research -->
   <meta name="description" content="BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS">
   <!-- TODO: Add 5-10 relevant keywords for your research area -->
@@ -74,7 +74,7 @@
 
 
   <!-- TODO: Replace with your paper title and authors -->
-  <title>PAPER_TITLE - AUTHOR_NAMES | Academic Research</title>
+  <title>Shadow-Aware 3D Gaussian Splatting via Lambertian-Guided Neural Masking</title>
   
   <!-- Favicon and App Icons -->
   <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
@@ -177,6 +177,85 @@
     ]
   }
   </script>
+    
+  <style>
+    .custom-nav-container {
+            /* 模拟原结构：col-md-4 col-md-offset-2 text-center 的粗略效果 */
+            width: 83.333%;        /* 对应 col-md-10 (offset-2 实际是偏移16.66% + 宽度33.33% -> 总占5/12 ≈41.66%，这里灵活处理让视觉舒服) */
+            max-width: 1000px;      /* 防止太宽 */
+            margin: 2rem auto;      /* 水平居中，上下留空 */
+            background-color: transparent;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+
+    /* 完全自定义的 nav-pills 平均分布 */
+    .inline-icon-nav {
+            display: flex;             /* 弹性行排列 */
+            flex-wrap: wrap;           /* 万一屏幕极小，允许折行（但保持平均） */
+            justify-content: space-evenly;  /* 平均分布，包括左右间隙相等 —— 真正平均 */
+            align-items: flex-end;      /* 底部对齐让文字高度自然 */
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 0.5rem;               /* 最小间隙，防太挤，不影响平均 */
+            background: transparent;
+            border: none;
+     }
+
+    .inline-icon-nav li {
+            flex: 1 1 0;                /* 每个项目等宽，允许收缩和扩展，实现完全平均 */
+            min-width: 120px;            /* 确保太小时不崩，但依然保持比例 */
+            text-align: center;
+            background: transparent;
+     }
+
+    .inline-icon-nav li a {
+            display: block;
+            text-decoration: none;
+            color: #2c3e50;              /* 深灰蓝，稳重 */
+            padding: 0.75rem 0.25rem;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+            background-color: transparent;
+    }
+
+    .inline-icon-nav li a:hover {
+            background-color: rgba(0, 123, 255, 0.04); /* 极淡蓝色反馈，提升交互 */
+     }
+
+    /* 图标统一设置 */
+    .inline-icon-nav img {
+            display: block;
+            margin: 0 auto 0.5rem auto;   /* 水平居中，下边距 */
+            height: 90px;
+            width: auto;
+            object-fit: contain;          /* 保持比例，不挤压 */
+    }
+
+    /* 文字样式 */
+    .inline-icon-nav h4 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 400;
+            line-height: 1.3;
+            word-break: break-word;
+    }
+
+    .inline-icon-nav strong {
+            font-weight: 700;             /* 加粗 */
+            letter-spacing: 0.01em;
+    }
+
+    /* 完全不用bootstrap，保持干净 */
+    .text-center {
+            text-align: center;
+    }
+
+    /* 为了保留原始类名语义，直接在div上使用内联样式也行，但这里用class控制，便于阅读 */
+    /* 如果想完全复刻col-md-4 col-md-offset-2的不精确宽度，可以加模拟偏移——但更建议视觉舒服 */
+    /* 我们采用一个干净的居中宽容器，让ul自行平均分布 */
+    </style>
+    
 </head>
 <body>
 
@@ -184,55 +263,7 @@
   <!-- Scroll to Top Button -->
   <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
     <i class="fas fa-chevron-up"></i>
-  </button>
-
-  <!-- More Works Dropdown -->
-  <div class="more-works-container">
-    <button class="more-works-btn" onclick="toggleMoreWorks()" title="View More Works from Our Lab">
-      <i class="fas fa-flask"></i>
-      More Works
-      <i class="fas fa-chevron-down dropdown-arrow"></i>
-    </button>
-    <div class="more-works-dropdown" id="moreWorksDropdown">
-      <div class="dropdown-header">
-        <h4>More Works from Our Lab</h4>
-        <button class="close-btn" onclick="toggleMoreWorks()">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div class="works-list">
-        <!-- TODO: Replace with your lab's related works -->
-        <a href="https://arxiv.org/abs/PAPER_ID_1" class="work-item" target="_blank">
-          <div class="work-info">
-            <!-- TODO: Replace with actual paper title -->
-            <h5>Paper Title 1</h5>
-            <!-- TODO: Replace with brief description -->
-            <p>Brief description of the work and its main contribution.</p>
-            <!-- TODO: Replace with venue and year -->
-            <span class="work-venue">Conference/Journal 2024</span>
-          </div>
-          <i class="fas fa-external-link-alt"></i>
-        </a>
-        <!-- TODO: Add more related works or remove extra items -->
-        <a href="https://arxiv.org/abs/PAPER_ID_2" class="work-item" target="_blank">
-          <div class="work-info">
-            <h5>Paper Title 2</h5>
-            <p>Brief description of the work and its main contribution.</p>
-            <span class="work-venue">Conference/Journal 2023</span>
-          </div>
-          <i class="fas fa-external-link-alt"></i>
-        </a>
-        <a href="https://arxiv.org/abs/PAPER_ID_3" class="work-item" target="_blank">
-          <div class="work-info">
-            <h5>Paper Title 3</h5>
-            <p>Brief description of the work and its main contribution.</p>
-            <span class="work-venue">Conference/Journal 2023</span>
-          </div>
-          <i class="fas fa-external-link-alt"></i>
-        </a>
-      </div>
-    </div>
-  </div>
+  </button>  
 
   <main id="main-content">
   <section class="hero">
@@ -241,71 +272,51 @@
         <div class="columns is-centered">
           <div class="column has-text-centered">
             <!-- TODO: Replace with your paper title -->
-            <h1 class="title is-1 publication-title">Academic Project Page</h1>
+            <h1 class="title is-1 publication-title">Shadow-Aware 3D Gaussian Splatting via Lambertian-Guided Neural Masking</h1>
             <div class="is-size-5 publication-authors">
               <!-- TODO: Replace with your paper authors and their personal links -->
               <span class="author-block">
-                <a href="FIRST AUTHOR PERSONAL LINK" target="_blank">First Author</a><sup>*</sup>,</span>
+                <a href="FIRST AUTHOR PERSONAL LINK" target="_blank">Shan Tang</a>,</span>
                 <span class="author-block">
-                  <a href="SECOND AUTHOR PERSONAL LINK" target="_blank">Second Author</a><sup>*</sup>,</span>
+                  <a href="SECOND AUTHOR PERSONAL LINK" target="_blank">Wenhua Qian</a>,</span>
                   <span class="author-block">
-                    <a href="THIRD AUTHOR PERSONAL LINK" target="_blank">Third Author</a>
+                    <a href="THIRD AUTHOR PERSONAL LINK" target="_blank">Peng Liu</a>
                   </span>
                   </div>
 
+              
+              
                   <div class="is-size-5 publication-authors">
                     <!-- TODO: Replace with your institution and conference/journal info -->
-                    <span class="author-block">Institution Name<br>Conference name and year</span>
-                    <!-- TODO: Remove this line if no equal contribution -->
-                    <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span>
+                    <span class="author-block">School of Information, Yunnan University</span>
                   </div>
 
-                  <div class="column has-text-centered">
-                    <div class="publication-links">
-                         <!-- TODO: Update with your arXiv paper ID -->
-                      <span class="link-block">
-                        <a href="https://arxiv.org/pdf/<ARXIV PAPER ID>.pdf" target="_blank"
-                        class="external-link button is-normal is-rounded is-dark">
-                        <span class="icon">
-                          <i class="fas fa-file-pdf"></i>
-                        </span>
-                        <span>Paper</span>
-                      </a>
-                    </span>
-
-                    <!-- TODO: Add your supplementary material PDF or remove this section -->
-                    <span class="link-block">
-                      <a href="static/pdfs/supplementary_material.pdf" target="_blank"
-                      class="external-link button is-normal is-rounded is-dark">
-                      <span class="icon">
-                        <i class="fas fa-file-pdf"></i>
-                      </span>
-                      <span>Supplementary</span>
-                    </a>
-                  </span>
-
-                  <!-- TODO: Replace with your GitHub repository URL -->
-                  <span class="link-block">
-                    <a href="https://github.com/YOUR REPO HERE" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fab fa-github"></i>
-                    </span>
-                    <span>Code</span>
-                  </a>
-                </span>
-
-                <!-- TODO: Update with your arXiv paper ID -->
-                <span class="link-block">
-                  <a href="https://arxiv.org/abs/<ARXIV PAPER ID>" target="_blank"
-                  class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="ai ai-arxiv"></i>
-                  </span>
-                  <span>arXiv</span>
-                </a>
-              </span>
+                  <div class="custom-nav-container text-center">
+                  <ul class="inline-icon-nav" role="navigation" aria-label="Data Download">
+                    <li>
+                        <a href="https://storage.googleapis.com/jax3d-public/projects/robustnerf/robustnerf.tar.gz">
+                            <img src="./static/images/data_icon.webp"
+                             alt="dataset icon" height="90px" style="height:90px;">
+                            <h4><strong>Real-World Data</strong></h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://storage.googleapis.com/jax3d-public/projects/robustnerf/robustnerf.tar.gz">
+                            <img src="./static/images/data_icon.webp"
+                             alt="synthetic icon" height="90px" style="height:90px;">
+                            <h4><strong>Synthetic Data</strong></h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://storage.googleapis.com/jax3d-public/projects/robustnerf/robustnerf.py">
+                            <img src="./static/images/code_icon.png"
+                             alt="code icon" height="90px" style="height:90px;">
+                            <h4><strong>Code</strong></h4>
+                        </a>
+                    </li>
+                </ul>
             </div>
+                           
           </div>
         </div>
       </div>
@@ -321,12 +332,12 @@
       <!-- TODO: Replace with your teaser video -->
       <video poster="" id="tree" autoplay controls muted loop height="100%" preload="metadata">
         <!-- TODO: Add your video file path here -->
-        <source src="static/videos/banner_video.mp4" type="video/mp4">
+        <source src="static/videos/living room.mp4" type="video/mp4">
       </video>
       <!-- TODO: Replace with your video description -->
-      <h2 class="subtitle has-text-centered">
-        Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus tellus, maximus vel lectus at, placerat pretium mi. Maecenas dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut maximus. 
-      </h2>
+      <p class="subtitle has-text-centered" style="font-size: 16px; font-style: italic">
+        Shadows cast by the photographer or surrounding pedestrians are usually captured in the training views. ShadowGS effectively eliminates shadow-induced artifacts while preserving geometric consistency and rendering fidelity.
+      </p>
     </div>
   </div>
 </section>
@@ -341,7 +352,7 @@
         <div class="content has-text-justified">
           <!-- TODO: Replace with your paper abstract -->
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ullamcorper tellus sed ante aliquam tempus. Etiam porttitor urna feugiat nibh elementum, et tempor dolor mattis. Donec accumsan enim augue, a vulputate nisi sodales sit amet. Proin bibendum ex eget mauris cursus euismod nec et nibh. Maecenas ac gravida ante, nec cursus dui. Vivamus purus nibh, placerat ac purus eget, sagittis vestibulum metus. Sed vestibulum bibendum lectus gravida commodo. Pellentesque auctor leo vitae sagittis suscipit.
+            Recently, 3D Gaussian Splatting (3DGS) has demonstrated impressive performance in novel view synthesis due to its efficient explicit scene representation and real-time rendering. However, its reconstruction quality significantly degrades in the presence of accidental shadows within input images. We observe that 3DGS tends to misinterpret shadow regions as view-dependent reflectance variations, such as specular highlights or Fresnel effects, leading to persistent artifacts in synthesized views. To address this issue, we propose a shadow-aware optimization framework that explicitly identifies and suppresses accidental shadows during training. Specifically, we first derive candidate shadow masks from shadow-free renderings to provide coarse shadow localization. A residual-based neural classifier is then employed to refine these masks by modeling photometric inconsistencies. Furthermore, a Lambertian reflectance constraint is imposed within the detected shadow regions to regularize view-dependent components and prevent shadows from being misinterpreted as specular effects. Extensive experiments demonstrate that our method effectively eliminates shadow-induced artifacts while preserving geometric consistency and rendering fidelity. Compared with vanilla 3DGS, our approach achieves consistently improved reconstruction quality across multiple datasets while maintaining the high optimization efficiency characteristic of 3DGS.
           </p>
         </div>
       </div>
@@ -358,31 +369,43 @@
       <div id="results-carousel" class="carousel results-carousel">
        <div class="item">
         <!-- TODO: Replace with your research result images -->
-        <img src="static/images/carousel1.jpg" alt="First research result visualization" loading="lazy"/>
+        <video poster="" id="video2" controls muted loop height="100%" preload="metadata">
+            <!-- Your video file here -->
+            <source src="static/videos/bench.mp4" type="video/mp4">
+        </video>
         <!-- TODO: Replace with description of this result -->
         <h2 class="subtitle has-text-centered">
-          First image description.
+          Comparisons of 3DGS(left) and ShadowGS(right) on Bench Dataset.
         </h2>
       </div>
       <div class="item">
         <!-- Your image here -->
-        <img src="static/images/carousel2.jpg" alt="Second research result visualization" loading="lazy"/>
+        <video poster="" id="video2" controls muted loop height="100%" preload="metadata">
+            <!-- Your video file here -->
+            <source src="static/videos/bike.mp4" type="video/mp4">
+        </video>
         <h2 class="subtitle has-text-centered">
-          Second image description.
+          Comparisons of 3DGS(left) and ShadowGS(right) on Bike Dataset.
         </h2>
       </div>
       <div class="item">
         <!-- Your image here -->
-        <img src="static/images/carousel3.jpg" alt="Third research result visualization" loading="lazy"/>
+        <video poster="" id="video2" controls muted loop height="100%" preload="metadata">
+            <!-- Your video file here -->
+            <source src="static/videos/fire.mp4" type="video/mp4">
+        </video>
         <h2 class="subtitle has-text-centered">
-         Third image description.
+         Comparisons of 3DGS(left) and ShadowGS(right) on Fire Hydrant Dataset.
        </h2>
      </div>
      <div class="item">
       <!-- Your image here -->
-      <img src="static/images/carousel4.jpg" alt="Fourth research result visualization" loading="lazy"/>
+      <video poster="" id="video2" controls muted loop height="100%" preload="metadata">
+            <!-- Your video file here -->
+            <source src="static/videos/permisson.mp4" type="video/mp4">
+        </video>
       <h2 class="subtitle has-text-centered">
-        Fourth image description.
+        Comparisons of 3DGS(left) and ShadowGS(right) on Persimmon Dataset.
       </h2>
     </div>
   </div>
@@ -390,106 +413,6 @@
 </div>
 </section>
 <!-- End image carousel -->
-
-
-
-
-<!-- Youtube video -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <!-- Paper video. -->
-      <h2 class="title is-3">Video Presentation</h2>
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          
-          <div class="publication-video">
-            <!-- TODO: Replace with your YouTube video ID -->
-            <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End youtube video -->
-
-
-<!-- Video carousel -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-3">Another Carousel</h2>
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-video1">
-          <!-- TODO: Add poster image for better preview -->
-          <video poster="" id="video1" controls muted loop height="100%" preload="metadata">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel1.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video2">
-          <!-- TODO: Add poster image for better preview -->
-          <video poster="" id="video2" controls muted loop height="100%" preload="metadata">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel2.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video3">
-          <!-- TODO: Add poster image for better preview -->
-          <video poster="" id="video3" controls muted loop height="100%" preload="metadata">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel3.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End video carousel -->
-
-
-
-
-
-
-<!-- Paper poster -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title">Poster</h2>
-
-      <!-- TODO: Replace with your poster PDF -->
-      <iframe  src="static/pdfs/sample.pdf" width="100%" height="550">
-          </iframe>
-        
-      </div>
-    </div>
-  </section>
-<!--End paper poster -->
-
-
-
-<!--BibTex citation -->
-  <section class="section" id="BibTeX">
-    <div class="container is-max-desktop content">
-      <div class="bibtex-header">
-        <h2 class="title">BibTeX</h2>
-        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
-          <i class="fas fa-copy"></i>
-          <span class="copy-text">Copy</span>
-        </button>
-      </div>
-      <pre id="bibtex-code"><code>@article{YourPaperKey2024,
-  title={Your Paper Title Here},
-  author={First Author and Second Author and Third Author},
-  journal={Conference/Journal Name},
-  year={2024},
-  url={https://your-domain.com/your-project-page}
-}</code></pre>
-    </div>
-</section>
-<!--End BibTex citation -->
 
 
   <footer class="footer">
@@ -500,8 +423,6 @@
 
           <p>
             This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
           </p>
 
         </div>
