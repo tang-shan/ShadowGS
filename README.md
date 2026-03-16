@@ -3,22 +3,13 @@
 > **Update (Mar 2026)**
 
 ![image](https://github.com/tang-shan/ShadowGS/blob/master/static/images/teaser.png)
-A clean, responsive template for academic project pages.
+When images are collected using mobile phones or other handheld devices in unconstrained environments,
+shadows cast by the photographer or surrounding pedestrians are usually captured in the training views.
+Vanilla 3D Gaussian Splatting tends to interpret these transient shadows as intrinsic surface properties,
+thereby encoding them into the reconstructed material and producing view-dependent artifacts.
 
+---
 
-Example project pages built using this template are:
-- https://horwitz.ai/probex
-- https://vision.huji.ac.il/probegen
-- https://horwitz.ai/mother
-- https://horwitz.ai/spectral_detuning
-- https://vision.huji.ac.il/ladeda
-- https://vision.huji.ac.il/dsire
-- https://horwitz.ai/podd
-- https://dreamix-video-editing.github.io
-- https://horwitz.ai/conffusion
-- https://horwitz.ai/3d_ads/
-- https://vision.huji.ac.il/ssrl_ad
-- https://vision.huji.ac.il/deepsim
 
 
 
