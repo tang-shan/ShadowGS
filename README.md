@@ -1,7 +1,8 @@
-# Academic Project Page Template
+# Shadow-Aware 3D Gaussian Splatting via Lambertian-Guided Neural Masking
 
-> **Update (September 2025)**: This template has been modernized with better design, SEO, and mobile support. For the original version, see the [original-version branch](https://github.com/eliahuhorwitz/Academic-project-page-template/tree/original-version).
+> **Update (Mar 2026)**
 
+![image](https://github.com/tang-shan/ShadowGS/blob/master/static/images/teaser.png)
 A clean, responsive template for academic project pages.
 
 
