@@ -2,7 +2,7 @@
 
 > **Update (Mar 2026)**
 
-![image](https://github.com/tang-shan/ShadowGS/blob/master/static/images/teaser.png)
+![Teaser](https://github.com/tang-shan/ShadowGS/blob/master/static/images/teaser.png)
 When images are collected using mobile phones or other handheld devices in unconstrained environments,
 shadows cast by the photographer or surrounding pedestrians are usually captured in the training views.
 Vanilla 3D Gaussian Splatting tends to interpret these transient shadows as intrinsic surface properties,
