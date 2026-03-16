@@ -9,64 +9,43 @@ Vanilla 3D Gaussian Splatting tends to interpret these transient shadows as intr
 thereby encoding them into the reconstructed material and producing view-dependent artifacts.
 
 ---
+![Mehtod](https://github.com/tang-shan/ShadowGS/blob/master/static/images/framework.png)
+Given training views, a hybrid 3D Gaussian representation models geometry and appearance using hash encoding and lightweight neural predictors.
+A shadow-aware masking module first generates a candidate shadow prior from distractor-free images and refines it via residual-driven neural prediction, producing the final shadow mask $\mathcal{M}$.
+This mask acts as a pixel-wise reliability map to modulate photometric supervision,
+while a Lambertian reflectance constraint suppresses view-dependent compensation within shadow regions.
+Both losses are jointly optimized in an end-to-end manner to achieve shadow-robust 3D Gaussian reconstruction.
 
+## Environmental Setups
+```bash
+git clone https://github.com/tang-shan/ShadowGS.git
+cd ShadowGS/src
+conda env create -f environment.yml
+```
+## Data Preparation
+For Shadow-distractor scene construction, using 3D Gaussian Splatting and clean image dataset to prepare shadow mask. Put the mask into the "shadow_masks" folder.
+For object-distractor scene construction, you need to generate the object segmentation masks using SegmentAnything. Note that you need to install SegmentAnything and use the latest vit_b checkpoint. See [here](https://github.com/facebookresearch/segment-anything) for a tutorial.
 
+The dataset structureshould look follows
 
+```
+├── data
+│   | Shadow-distractor dataset
+│     ├── images
+│     ├── sparse
+│     ├── shadow_masks
+│   | object-distractor dataset
+│     ├── images
+│     ├── sparse
+│     ├── segments
+│  ...
 
-## Start using the template
-To start using the template click on `Use this Template`.
+## Training
+```
+python train.py -s path/to/data
+```
 
-The template uses html for controlling the content and css for controlling the style. 
-To edit the websites contents edit the `index.html` file. It contains different HTML "building blocks", use whichever ones you need and comment out the rest.  
-
-**IMPORTANT!** Make sure to replace the `favicon.ico` under `static/images/` with one of your own, otherwise your favicon is going to be a dreambooth image of me.
-
-## What's New
-
-- Modern, clean design with better mobile support
-- Improved SEO with proper meta tags and structured data
-- Performance improvements (lazy loading, optimized assets)
-- More Works dropdown
-- Copy button for BibTeX citations
-- Better accessibility
-
-## Components
-
-- Teaser video
-- Image carousel
-- YouTube video embedding
-- Video carousel
-- PDF poster viewer
-- BibTeX citation
-
-## Customization
-
-The HTML file has TODO comments showing what to replace:
-
-- Paper title, authors, institution, conference
-- Links (arXiv, GitHub, etc.)
-- Abstract and descriptions  
-- Videos, images, and PDFs
-- Related works in the dropdown
-- Meta tags for SEO and social sharing
-
-### Meta Tags
-The template includes meta tags for better search engine visibility and social media sharing. These appear in the `<head>` section and help with:
-- Google Scholar indexing
-- Social media previews (Twitter, Facebook, LinkedIn)
-- Search engine optimization
-
-Create a 1200x630px social preview image at `static/images/social_preview.png`.
-
-## Tips
-
-- Compress images with [TinyPNG](https://tinypng.com)
-- Use YouTube for large videos (>10MB)  
-- Replace the favicon in `static/images/`
-- Works with GitHub Pages
 
 ## Acknowledgments
 Parts of this project page were adopted from the [Nerfies](https://nerfies.github.io/) page.
 
-## Website License
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
