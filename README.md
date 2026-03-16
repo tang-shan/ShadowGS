@@ -21,7 +21,10 @@ Both losses are jointly optimized in an end-to-end manner to achieve shadow-robu
 git clone https://github.com/tang-shan/ShadowGS.git
 cd ShadowGS/src
 conda env create -f environment.yml
+pip install submodules/diff-gaussian-rasterization
+pip install submodules/simple-knn
 ```
+
 ## Data Preparation
 For Shadow-distractor scene construction, using 3D Gaussian Splatting and clean image dataset to prepare shadow mask. Put the mask into the "shadow_masks" folder.
 For object-distractor scene construction, you need to generate the object segmentation masks using SegmentAnything. Note that you need to install SegmentAnything and use the latest vit_b checkpoint. See [here](https://github.com/facebookresearch/segment-anything) for a tutorial.
