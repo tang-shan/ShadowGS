@@ -51,7 +51,7 @@ For object-distractor scenes, segmentation masks are generated using Segment Any
 ## Dataset Structure
 ```
 data/
-├── shadow-distractor dataset/
+├── real-world dataset/
 │   ├── images/
 │   ├── sparse/
 │   ├── train_list.txt
@@ -61,10 +61,12 @@ data/
 │
 ├── synthetic dataset/
 │   ├── images/
-│   ├── images_clean/        (evaluation only)
 │   ├── sparse/
 │   ├── train_list.txt
 │   ├── test_list.txt
+│   ├── shadow_masks/        (candidate masks)
+│   ├── shadow_masks_gt/     (evaluation only)
+│   ├── images_clean/        (evaluation only)   
 │
 ├── object-distractor dataset/
 │   ├── images/
