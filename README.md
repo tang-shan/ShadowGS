@@ -1,6 +1,6 @@
 # Shadow-Aware 3D Gaussian Splatting via Lambertian-Guided Neural Masking
 
-> **Update (Mar 2026)**
+> **Update (June 2026)**
 
 ![Teaser](https://github.com/tang-shan/ShadowGS/blob/master/static/images/teaser.png)
 When images are collected using mobile phones or other handheld devices in unconstrained environments,
@@ -24,25 +24,17 @@ conda env create -f environment.yml
 pip install submodules/diff-gaussian-rasterization
 pip install submodules/simple-knn
 ```
+## Data
+The real-world dataset can be downloaded from [here](https://pan.baidu.com/s/1O3oddWDeUhkZmR-Zst0vJA?pwd=ddk9).
+The synthetic dataset can be downloaded from [here](https://pan.baidu.com/s/1AZmu_WvzA3ZFSbhRNvjdyQ?pwd=hgf3).
+Both datasets provide predefined training and test splits via \texttt{train_list.txt} and \texttt{test\_list.txt}. These files are used to strictly separate training and evaluation views.
+
 
 ## Data Preparation
 For Shadow-distractor scene construction, using 3D Gaussian Splatting and clean image dataset to prepare shadow mask. Put the mask into the "shadow_masks" folder.
 For object-distractor scene construction, you need to generate the object segmentation masks using SegmentAnything. Note that you need to install SegmentAnything and use the latest vit_b checkpoint. See [here](https://github.com/facebookresearch/segment-anything) for a tutorial.
 
-The dataset structureshould look follows
 
-```
-├── data
-│   | Shadow-distractor dataset
-│     ├── images
-│     ├── sparse
-│     ├── shadow_masks
-│   | object-distractor dataset
-│     ├── images
-│     ├── sparse
-│     ├── segments
-│  ...
-```
 
 ## Training
 ```
