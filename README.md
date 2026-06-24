@@ -86,3 +86,12 @@ cal_psnr(gt_path, result_path, mask_path=None)
 cal_ssim(gt_path, result_path, mask_path=None)
 cal_lpips(gt_path, result_path, mask_path=None)
 
+
+## Dataset License
+The dataset used in this work is collected and processed by the authors. 
+All images and annotations are provided for research purposes only.
+
+The dataset is NOT intended for commercial use and should not be redistributed without permission.
+
+For data derived from COLMAP reconstruction, we follow the original license of the source dataset. 
+Any third-party data used in this work remains under its original license.
