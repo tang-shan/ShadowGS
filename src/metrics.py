@@ -1,25 +1,18 @@
-#
-# Copyright (C) 2023, Inria
-# GRAPHDECO research group, https://team.inria.fr/graphdeco
-# All rights reserved.
-#
-# This software is free for non-commercial, research and evaluation use 
-# under the terms of the LICENSE.md file.
-#
-# For inquiries contact  george.drettakis@inria.fr
-#
-
-from pathlib import Path
 import os
+from pathlib import Path
 from PIL import Image
 import torch
 import torchvision.transforms.functional as tf
-from utils.loss_utils import ssim
-from lpipsPyTorch import lpips
+from sgs.utils.loss_utils import ssim
+from compare.gaussiansplatting.lpipsPyTorch import lpips
 import json
 from tqdm import tqdm
-from utils.image_utils import psnr
+from sgs.utils.image_utils import psnr
 from argparse import ArgumentParser
+import numpy as np
+import glob
+from torchvision.utils import save_image
+
 
 def readImages(renders_dir, gt_dir):
     renders = []
@@ -32,6 +25,46 @@ def readImages(renders_dir, gt_dir):
         gts.append(tf.to_tensor(gt).unsqueeze(0)[:, :3, :, :].cuda())
         image_names.append(fname)
     return renders, gts, image_names
+
+
+def readImage(path):
+    img = Image.open(path)
+    return tf.to_tensor(img).unsqueeze(0)[:, :3, :, :].cuda()
+
+def read_image_to_binary_tensor(path, threshold=128, target_size=None):
+    """
+    将图片读取为二值图像的tensor
+    
+    Args:
+        path: 图片路径
+        threshold: 二值化阈值 (0-255)，默认128
+        target_size: 目标大小 (h, w)，可选
+        
+    Returns:
+        binary_tensor: 二值tensor [h, w]，值为0或1
+    """
+    # 读取图片
+    image = Image.open(path)
+    
+    # 转换为灰度图
+    if image.mode != 'L':
+        image = image.convert('L')
+    
+    # 调整大小（如果指定了目标大小）
+    if target_size is not None:
+        h, w = target_size
+        image = image.resize((w, h), Image.Resampling.LANCZOS)
+    
+    # 转换为numpy数组
+    img_array = np.array(image)
+    
+    # 二值化处理
+    binary_array = (img_array > threshold).astype(np.float32)
+    
+    # 转换为tensor
+    binary_tensor = torch.from_numpy(binary_array)
+    
+    return binary_tensor.cuda()
 
 def evaluate(model_paths):
 
@@ -92,12 +125,49 @@ def evaluate(model_paths):
         except:
             print("Unable to compute metrics for model", scene_dir)
 
-if __name__ == "__main__":
-    device = torch.device("cuda:0")
-    torch.cuda.set_device(device)
 
-    # Set up command line argument parser
-    parser = ArgumentParser(description="Training script parameters")
-    parser.add_argument('--model_paths', '-m', required=True, nargs="+", type=str, default=[])
-    args = parser.parse_args()
-    evaluate(args.model_paths)
+def cal_lpips(gt_path,result_path,mask_path=None):
+    gt_img = readImage(gt_path)
+    result_img = readImage(result_path,target_size=target_size)
+    if mask_path is not None:
+        target_size = (gt_img.shape[2], gt_img.shape[3])  # H, W
+        mask_img = read_image_to_binary_tensor(
+                mask_path,
+                threshold=128,
+                target_size=target_size
+            )
+        gt_img = gt_img*mask_img
+        result_img = result_img*mask_img
+    return lpips(result_img,gt_img,net_type='vgg')
+
+def cal_ssim(gt_path,result_path,mask_path=None):
+    gt_img = readImage(gt_path)
+    result_img = readImage(result_path,target_size=target_size)
+    if mask_path is not None:
+        target_size = (gt_img.shape[2], gt_img.shape[3])  # H, W
+        mask_img = read_image_to_binary_tensor(
+                mask_path,
+                threshold=128,
+                target_size=target_size
+            )
+        gt_img = gt_img*mask_img
+        result_img = result_img*mask_img
+    return ssim(result_img,gt_img)
+
+
+def cal_psnr(gt_path,result_path,mask_path=None):
+    gt_img = readImage(gt_path)
+    result_img = readImage(result_path,target_size=target_size)
+    if mask_path is not None:
+        target_size = (gt_img.shape[2], gt_img.shape[3])  # H, W
+        mask_img = read_image_to_binary_tensor(
+                mask_path,
+                threshold=128,
+                target_size=target_size
+            )
+        gt_img = gt_img*mask_img
+        result_img = result_img*mask_img
+    return psnr(result_img,gt_img)
+
+    
+
