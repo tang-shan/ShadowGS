@@ -79,3 +79,10 @@ python train.py -s path/to/data -m path/to/model
 
 ## Rendering 
 python render.py -m path/to/model
+
+## Metric
+Using the functions in metrics.py. 
+cal_psnr(gt_path, result_path, mask_path=None)
+cal_ssim(gt_path, result_path, mask_path=None)
+cal_lpips(gt_path, result_path, mask_path=None)
+
