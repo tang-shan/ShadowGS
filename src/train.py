@@ -31,8 +31,9 @@ try:
     TENSORBOARD_FOUND = True
 except ImportError:
     TENSORBOARD_FOUND = False
-
-from PIL import Image
+from robust_loss import adaptive_shadow_residual,save_tensor_as_image,IndoorRobustLoss
+from robust_util import shadow_overlap,shadow_overlap_indoor
+import torch.optim as optim
 
 
 def training(dataset, opt, pipe, robust_config, testing_iterations, saving_iterations, checkpoint_iterations, checkpoint, debug_from):
@@ -65,8 +66,10 @@ def training(dataset, opt, pipe, robust_config, testing_iterations, saving_itera
         if cam.image_name[:5]=="test_": 
             continue
         else:
-            train_stack.append(cam)
-        
+            number = int(cam.image_name.split('.')[0])
+            if number<140: 
+                train_stack.append(cam)
+    
     train_stack_bak = train_stack.copy()
 
     ema_loss_for_log = 0.0
@@ -74,20 +77,36 @@ def training(dataset, opt, pipe, robust_config, testing_iterations, saving_itera
     first_iter += 1
 
     # init masks
-    channel_mask = 1
+    channel_mask = 3
     _,H,W = train_stack[0].original_image.shape
 
+    old_residuals = torch.ones(
+        (len(viewpoint_stack), robust_config['n_residuals'], channel_mask, H, W),
+        dtype=torch.float32, device="cuda")
+    all_masks = torch.ones((len(viewpoint_stack), channel_mask, H, W),
+                           dtype=torch.float32, device="cuda")
+    uid_to_image_name = np.empty(len(viewpoint_stack), dtype=object)
+
+    calculate_mask = IndoorRobustLoss(n_residuals=robust_config['n_residuals'], per_channel = True)
+    optimizer_thresholds = optim.SGD([{'params': calculate_mask.parameters()}], lr=0.1)
+
+
     for iteration in range(first_iter, opt.iterations + 1):        
+
+        
         iter_start.record()
+
         gaussians.update_learning_rate(iteration)
+
         # Every 1000 its we increase the levels of SH up to a maximum degree
         if iteration % 1000 == 0:
             gaussians.oneupSHdegree()
+
         # Pick a random Camera
         if not train_stack:
             train_stack = train_stack_bak.copy()
         viewpoint_cam = train_stack.pop(randint(0, len(train_stack)-1))
-        
+
         # Render
         if (iteration - 1) == debug_from:
             pipe.debug = True
@@ -97,26 +116,38 @@ def training(dataset, opt, pipe, robust_config, testing_iterations, saving_itera
         render_pkg = render(viewpoint_cam, gaussians, pipe, bg)
         image, viewspace_point_tensor, visibility_filter, radii = render_pkg["render"], render_pkg["viewspace_points"], render_pkg["visibility_filter"], render_pkg["radii"]
 
-        #color_factor = render_pkg["color_factor"]
+        color_factor = render_pkg["color_factor"]
 
         # Loss
         gt_image = viewpoint_cam.original_image.cuda()
 
 
-        mask = viewpoint_cam.shadow_mask
+        # break gradient from rendering
+        residual = torch.abs(image - gt_image)
+        multiple_old_residual = old_residuals[viewpoint_cam.uid]
+        mask, _ = calculate_mask(multiple_old_residual)
         
-        with torch.no_grad():
-            gt_image = gt_image * mask
-            gt_image = gt_image.detach()
+        mask = shadow_overlap_indoor(mask.squeeze(),viewpoint_cam.shadow_mask,0.1)
+        mask = mask.bool()
+        mask = mask.unsqueeze(0)
 
+        all_shadow_mask = viewpoint_cam.all_shadow_mask.cuda()
         
-        image = image * mask
-        #color_factor = color_factor*~mask
-        #factor_loss = torch.mean(color_factor ** 2)
+        if robust_config["mask_start_epoch"] < iteration:
+            with torch.no_grad():
+                gt_image = gt_image * ~mask
+                gt_image = gt_image.detach()
+            image = image * ~mask
+            color_factor = color_factor*all_shadow_mask
+            factor_loss = torch.mean(color_factor ** 2)
         
         Ll1 = l1_loss(image, gt_image)
+        loss_mask = (1.0 - opt.lambda_dssim) * Ll1 + opt.lambda_dssim * (1.0 - ssim(image, gt_image)) 
+        optimizer_thresholds.zero_grad()
+        loss_mask.backward(retain_graph=True)
+        optimizer_thresholds.step()
         loss = (1.0 - opt.lambda_dssim) * Ll1 + opt.lambda_dssim * (1.0 - ssim(image, gt_image))
-        #loss = loss + opt.lambda_factor*factor_loss
+        loss = loss + opt.lambda_factor*factor_loss
         loss.backward()
 
         iter_end.record()
@@ -161,7 +192,39 @@ def training(dataset, opt, pipe, robust_config, testing_iterations, saving_itera
             if (iteration in checkpoint_iterations):
                 print("\n[ITER {}] Saving Checkpoint".format(iteration))
                 torch.save((gaussians.capture(), iteration), scene.model_path + "/chkpnt" + str(iteration) + ".pth")
-        iter_end.record()
+        with torch.no_grad():
+            # shift array and store n old resudials
+            #old_residuals = torch.roll(old_residuals, 1, 1)
+            old_residuals[viewpoint_cam.uid, 0] = residual
+            all_masks[viewpoint_cam.uid] = mask
+            uid_to_image_name[viewpoint_cam.uid] = viewpoint_cam.image_name
+            iter_end.record()
+        if iteration % robust_config["save_mask_interval"] == 0:
+            path = os.path.join(scene.model_path, 'masks')
+            log_mask_path = os.path.join(path, 'log_mask')
+            seg_mask_path = os.path.join(path, 'seg_mask')
+            before_log_mask_path = os.path.join(path, 'before_log')
+
+            if not os.path.exists(os.path.join(scene.model_path, 'masks')):
+                os.mkdir(path)
+                os.mkdir(log_mask_path)
+                os.mkdir(seg_mask_path)
+                os.mkdir(before_log_mask_path)
+            if robust_config["use_segmentation"]:
+                for i, mask in enumerate(all_masks[:50]):
+                    to_pil = ToPILImage()
+                    image = to_pil(mask)
+                    image.save(os.path.join(seg_mask_path, f"mask_{iteration}_{uid_to_image_name[i]}.png"))
+
+        del all_shadow_mask,mask,residual,multiple_old_residual
+        torch.cuda.empty_cache()
+        
+
+    for i, mask in enumerate(old_residuals[:50]):
+        to_pil = ToPILImage()
+        m = calculate_mask(mask).int()
+        image = to_pil(torch.Tensor(m))
+        image.save(f'{scene.model_path}/masks/mask_end_{uid_to_image_name[i]}.png')
 
 
 
