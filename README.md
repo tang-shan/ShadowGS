@@ -29,17 +29,6 @@ pip install submodules/diff-gaussian-rasterization
 pip install submodules/simple-knn
 ```
 
-## Dataset
-The real-world dataset can be downloaded from:
-https://pan.baidu.com/s/1O3oddWDeUhkZmR-Zst0vJA?pwd=ddk9
-
-The synthetic dataset can be downloaded from:
-https://pan.baidu.com/s/1AZmu_WvzA3ZFSbhRNvjdyQ?pwd=hgf3
-
-Both datasets provide predefined training and test splits via *train_list.txt* and *test_list.txt*, which are strictly used to separate training and evaluation views.
-
-We additionally provide manually annotated shadow masks in *shadow_masks_gt*, where white pixels indicate shadow regions. For the synthetic dataset, *images_clean* provides shadow-free reference images. These annotations are used only for evaluation and are not involved in training.
-
 ## Data Preparation
 
 For shadow-distractor scenes, we construct candidate shadow masks using a clean-reference reconstruction pipeline. Specifically, a subset of training images with minimal shadow contamination is selected from the training split only (no test views are used). A standard 3D Gaussian Splatting (3DGS) model is trained on this subset to obtain a clean reference reconstruction.
